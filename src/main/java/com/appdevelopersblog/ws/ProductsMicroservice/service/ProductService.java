@@ -4,10 +4,14 @@ import com.appdevelopersblog.ws.ProductsMicroservice.model.CreateProductModel;
 import com.appdevelopersblog.ws.ProductsMicroservice.model.Product;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class ProductService {
+
+    private Map<String, Product> productList = new LinkedHashMap<>();
 
     public Product createProduct(CreateProductModel model) {
 
@@ -16,7 +20,21 @@ public class ProductService {
         product.setProductName(model.getProductName());
         product.setProductPrice(model.getProductPrice());
 
+        productList.put(product.getProductId(), product);
+
         return product;
     }
 
+    public Product getProduct(String productId) {
+
+        return productList.get(productId);
+    }
+
+    public Product sendLike(String productId) {
+
+        Product product = productList.get(productId);
+        product.setLikes(product.getLikes() + 1);
+
+        return product;
+    }
 }

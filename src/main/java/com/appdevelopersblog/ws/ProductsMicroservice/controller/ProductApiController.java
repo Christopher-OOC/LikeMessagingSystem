@@ -25,6 +25,20 @@ public class ProductApiController {
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
+    @GetMapping
+    public ResponseEntity<?> getProduct(String productId) {
 
+        Product product = productService.getProduct(productId);
 
+        return ResponseEntity.ok(product);
+    }
+
+    @PostMapping(value = "/{productId}/likes")
+    public ResponseEntity<?> likeProduct(@PathVariable("productId") String productId) {
+
+        Product product = productService.sendLike(productId);
+
+        return ResponseEntity.ok(product);
+
+    }
 }
