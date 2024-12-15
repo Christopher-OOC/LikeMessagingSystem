@@ -33,6 +33,9 @@ public class ProductService {
     public Product sendLike(String productId) {
 
         Product product = productList.get(productId);
+
+        // Send like to kafka
+
         product.setLikes(product.getLikes() + 1);
 
         return product;
