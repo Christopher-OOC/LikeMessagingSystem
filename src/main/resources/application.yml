@@ -9,6 +9,11 @@ spring:
       keySerializer: org.apache.kafka.common.serialization.StringSerializer
       valueSerializer: org.springframework.kafka.support.serializer.JsonSerializer
       acks: all
+      retries: 10
+      properties:
+        retry:
+          backoff:
+            ms: 10000
 
 
 
