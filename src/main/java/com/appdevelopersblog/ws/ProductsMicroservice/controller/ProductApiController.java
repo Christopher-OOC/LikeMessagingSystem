@@ -39,6 +39,5 @@ public class ProductApiController {
         Product product = productService.sendLike(productId);
 
         return ResponseEntity.ok(product);
-
     }
 }
