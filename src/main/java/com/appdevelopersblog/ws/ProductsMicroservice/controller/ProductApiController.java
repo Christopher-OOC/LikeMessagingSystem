@@ -25,8 +25,8 @@ public class ProductApiController {
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
-    @GetMapping
-    public ResponseEntity<?> getProduct(String productId) {
+    @GetMapping(value = "/{productId}")
+    public ResponseEntity<?> getProduct(@PathVariable("productId") String productId) {
 
         Product product = productService.getProduct(productId);
 

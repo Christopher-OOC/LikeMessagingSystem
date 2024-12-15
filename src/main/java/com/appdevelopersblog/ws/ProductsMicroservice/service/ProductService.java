@@ -2,6 +2,8 @@ package com.appdevelopersblog.ws.ProductsMicroservice.service;
 
 import com.appdevelopersblog.ws.ProductsMicroservice.model.CreateProductModel;
 import com.appdevelopersblog.ws.ProductsMicroservice.model.Product;
+import com.appdevelopersblog.ws.ProductsMicroservice.model.ProductLikedEvent;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
@@ -11,7 +13,12 @@ import java.util.UUID;
 @Service
 public class ProductService {
 
+    private KafkaTemplate<String, ProductLikedEvent> kafkaTemplate;
     private Map<String, Product> productList = new LinkedHashMap<>();
+
+    public ProductService(KafkaTemplate<String, ProductLikedEvent> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     public Product createProduct(CreateProductModel model) {
 
@@ -33,10 +40,10 @@ public class ProductService {
     public Product sendLike(String productId) {
 
         Product product = productList.get(productId);
+        product.setLikes(product.getLikes() + 1);
 
         // Send like to kafka
-
-        product.setLikes(product.getLikes() + 1);
+        kafkaTemplate.send("product-created-events-topic2", productId, new ProductLikedEvent(productId));
 
         return product;
     }
